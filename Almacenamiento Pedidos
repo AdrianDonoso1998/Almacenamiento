@@ -1,54 +1,53 @@
+package Entorno;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class EntradaCoches {
+public class Almacenar {
 
     static Scanner teclado = new Scanner(System.in);
-    static ArrayList<Object[]> coches;
+    static ArrayList<Object[]> pedidos;
 
     public static void main(String[] args) {
 
         int opcion = 0;
 
-        coches = new ArrayList();
+        pedidos = new ArrayList();
         do {
-            System.out.println("1- Agregar");
-            System.out.println("2- Listar");
-            System.out.println("3- Buscar");
-            System.out.println("4- Eliminar");
+            System.out.println("1- Agregar Productos");
+            System.out.println("2- Listar Productos");
+            System.out.println("3- Buscar Productos");
+            System.out.println("4- Eliminar Producto");
             System.out.println("5- Costes");
-            System.out.println("6- Vaciar");
+            System.out.println("6- Vaciar lista");
             System.out.println("7- Salir");
             System.out.println("Introduce opción");
             opcion = teclado.nextInt();
             switch (opcion) {
                 case 1:
-                    agregarCoche();
+                    agregarPedido();
                     break;
                 case 2:
                     listarCoches();
                     break;
                 case 3:
-                    System.out.println("Qué matricula quieres buscar");
-                    String matriculaBuscar = teclado.next();
-                    buscarCoche(matriculaBuscar);
+                    System.out.println("Qué producto quieres buscar");
+                    String productoBuscar = teclado.next();
+                    buscarProducto(productoBuscar);
                     break;
                 case 4:
-                    System.out.println("Qué matricula quieres borrar");
-                    String matriculaBorrar = teclado.next();
-                    borrarCoche(matriculaBorrar);
+                    System.out.println("Qué producto quieres borrar");
+                    String productoBorrar = teclado.next();
+                    borrarPedido(productoBorrar);
                     break;
                 case 5:
                     System.out.printf("El coste acumulado es: %.2f %n",calcularCostes());
-                    System.out.printf("El coste medio es: %.2f %n",calcularCostes()/coches.size());
-
-                    // imprimir coste
                     break;
                 case 6:
-                    if (coches.isEmpty()) {
+                    if (pedidos.isEmpty()) {
                         System.out.println("La lista está vacía");
                     }else {
-                        coches.clear();
+                        pedidos.clear();
                         System.out.println("Lista borrada");
                     }
                     break;
@@ -68,38 +67,35 @@ public class EntradaCoches {
 
         double costes=0.0;
 
-        for (Object[] elemento:coches) {
-            double costeIndividual = (double) elemento[2];
+        for (Object[] elemento:pedidos) {
+            double costeIndividual = (double) elemento[1];
             costes+=costeIndividual;
         }
 
         return costes;
     }
 
-    public static void borrarCoche(String matriculaBorrar) {
+    public static void borrarPedido(String productoBorrar) {
         Object[] borrado=null;
-        for (int i = 0; i < coches.size(); i++) {
+        for (int i = 0; i < pedidos.size(); i++) {
 
-            Object[] elemento = coches.get(i);
-            if (elemento[3].equals(matriculaBorrar)) {
-                borrado = coches.remove(i);
+            Object[] elemento = pedidos.get(i);
+            if (elemento[0].equals(productoBorrar)) {
+                borrado = pedidos.remove(i);
                 break;
             }
         }
 
         if (borrado!=null){
-            System.out.println("Coche borrado correctamente");
+            System.out.println("Producto borrado correctamente");
         } else {
-            System.out.println("Coche no encontrado");
+            System.out.println("Producto no encontrado");
         }
-
-        // System.out.println("coche no encontrado");
-
     }
 
     public static void listarCoches() {
-        if (!coches.isEmpty()){
-            for (Object[] elemento : coches) {
+        if (!pedidos.isEmpty()){
+            for (Object[] elemento : pedidos) {
                 for (Object item : elemento) {
                     System.out.print(item + " ");
                 }
@@ -111,43 +107,35 @@ public class EntradaCoches {
 
     }
 
-    public static void agregarCoche() {
+    public static void agregarPedido() {
 
 
-        System.out.println("intro modelo");
-        String modelo = teclado.next();
-        System.out.println("intro cv");
-        int cv = teclado.nextInt();
+        System.out.println("intro producto");
+        String producto = teclado.next();
         System.out.println("intro coste");
         double coste = teclado.nextDouble();
-        System.out.println("intro matricula");
-        String matricula = teclado.next();
-        Object[] unCoche = {modelo, cv, coste, matricula};
-        //coches.add(unCoche);
+        Object[] unPedido = {producto,coste};
 
         boolean existe = false;
         int encontrados = 0;
 
-        for (Object[] elemento : coches) {
-            if (elemento[3].equals(matricula)) {
-                // modifico valor de exite
+        for (Object[] elemento : pedidos) {
+            if (elemento[1].equals(producto)) {
                 encontrados++;
-                //existe = true;
                 break;
             }
         }
-        // hay alguno?
         if (encontrados > 0) {
-            System.out.println("el coche ya existe, no puedo");
+            System.out.println("el producto ya existe, no puedo");
         } else {
-            coches.add(unCoche);
+            pedidos.add(unPedido);
         }
     }
 
-    public static void buscarCoche(String matricula) {
+    public static void buscarProducto(String producto) {
 
-        for (Object[] elemento : coches) {
-            if (elemento[3].equals(matricula)) {
+        for (Object[] elemento : pedidos) {
+            if (elemento[1].equals(producto)) {
                 for (Object item : elemento) {
                     System.out.print(item + " ");
                 }
